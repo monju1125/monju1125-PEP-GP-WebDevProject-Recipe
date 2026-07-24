@@ -13,19 +13,28 @@
 <body>
 
     <!-- TODO: Add main heading for the page -->
+     <h1>Login</h1>
 
     <!-- TODO: Create an input field for username -->
+     <p>Username</p>
     <!-- - Use <input> with id="login-input" and appropriate placeholder -->
+     <input id= "login-input" type="text" placeholder="Enter username">
 
     <!-- TODO: Create an input field for password -->
+     <p>password</p>
     <!-- - Use <input type="password"> with id="password-input" -->
-
+     <input id= "password-input" type="password" placeholder="Enter password">
+    <br><br>
     <!-- TODO: Create a login button -->
+    <button id="login-button">Login</button>
     <!-- - Use <button> with id="login-button" -->
 
     <!-- TODO: Add an optional hidden logout button with id="logout-button" -->
-    <!-- - Can be revealed if needed during token testing or logout support -->
+    <button id="logout-button" style="display: none;"></button>
 
+    <!-- - Can be revealed if needed during token testing or logout support -->
+        <p>Do not have an account?</p>
+        <a href="../register/register-page.html">Register here</a>
     <!-- Link JS script -->
     <script src="login-page.js"></script>
 </body>
