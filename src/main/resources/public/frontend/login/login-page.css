@@ -1,0 +1,45 @@
+/**
+ * This file contains styles for the login-page.html file.
+
+ * It should define the visual appearance of the login form and other related elements.
+
+ * TODO (OPTIONAL): Not mandatory to modify the file and is optional
+ * - Customize margins and padding for specific elements to improve spacing.
+ * - Add hover effects or transitions for interactive elements (e.g., buttons, links).
+ * - Refine input and textarea styling for better responsiveness and accessibility.
+ * - Define additional styles for error messages or validation feedback if required.
+
+ */
+
+ body, h1, h2, ul, li, p, input, textarea, a {
+    margin: 2px;
+    margin-left: 50px;
+    padding: 0;
+}
+
+
+body {
+    margin: 2px;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-top: 20px;
+}
+
+textarea, input {
+    width: 30%;
+    min-width: 200px;
+}
+
+textarea {
+    height: 50px;
+}
