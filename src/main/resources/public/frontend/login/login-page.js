@@ -50,9 +50,17 @@ if(logoutButton && sessionStorage.getItem("auth-token")){
  * - Use `window.location.href` for redirection
  */
 async function processLogin() {
+    const usernameInput = document.getElementById("login-input");
+    const passwordInput = document.getElementById("password-input");
     // TODO: Retrieve username and password from input fields
-    const username = usernameInput.ariaValueMax.trim();
-    const password = passwordInput.ariaValueMax.trim();
+
+    if(!(usernameInput instanceof HTMLInputElement) || passwordInput instanceof HTMLInputElement){
+        alert("Login form inputs are missing.");
+        return;
+    }
+
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
 
     // - Trim input and validate that neither is empty
 
@@ -84,19 +92,20 @@ async function processLogin() {
 
     try {
         // TODO: Send POST request to http://localhost:8081/login using fetch with requestOptions
-        const response = await fetch('${BASE_URL}/login', requestOptions);
+        const response = await fetch(`${BASE_URL}/login`, requestOptions);
 
         // TODO: If response status is 200
-        if(response === 200){
+        if(response.status === 200){
             const responseText = await response.text();
             const parts = responseText.trim().split(/\s+/);
-        }
+        
         // - Read the response as text
         // - Response will be a space-separated string: "token123 true"
         // - Split the string into token and isAdmin flag
         // - Store both in sessionStorage using sessionStorage.setItem()
         const token = parts[0];
         const isAdmin = parts[1];
+        
         if(!token){
             alert("Login response did not contain a valid token.");
             return;
@@ -132,8 +141,5 @@ async function processLogin() {
         console.error("Login error:", error);
         alert("Unable to login. Please check your connection and try again");
     }
+
 }
-
-
-
-
