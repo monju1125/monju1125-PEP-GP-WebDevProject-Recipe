@@ -11,7 +11,7 @@ const BASE_URL = "http://localhost:8081"; // backend URL
  * - login button
  * - logout button (optional, for token testing)
  */
-const usernameInput = document.getElementById("login-input");
+const loginInput = document.getElementById("login-input");
 const passwordInput = document.getElementById("password-input");
 const loginButton = document.getElementById("login-button");
 const logoutButton = document.getElementById("logout-button");
@@ -50,16 +50,22 @@ if(logoutButton && sessionStorage.getItem("auth-token")){
  * - Use `window.location.href` for redirection
  */
 async function processLogin() {
-    const usernameInput = document.getElementById("login-input");
-    const passwordInput = document.getElementById("password-input");
+    //const usernameInput = document.getElementById("login-input");
+    //const passwordInput = document.getElementById("password-input");
     // TODO: Retrieve username and password from input fields
 
-    if(!(usernameInput instanceof HTMLInputElement) || passwordInput instanceof HTMLInputElement){
+    /*
+    if(!(loginInput instanceof HTMLInputElement) || passwordInput instanceof HTMLInputElement){
         alert("Login form inputs are missing.");
         return;
     }
+     */
+    if(!loginInput  || passwordInput || loginButton) {
+        console.error("Login form inputs are missing.");
+    }
 
-    const username = usernameInput.value.trim();
+
+    const username = loginInput.value.trim();
     const password = passwordInput.value.trim();
 
     // - Trim input and validate that neither is empty
@@ -142,4 +148,15 @@ async function processLogin() {
         alert("Unable to login. Please check your connection and try again");
     }
 
+}
+
+function processLogout(){
+    sessionStorage.removeItem("auth-token");
+    sessionStorage.removeItem("is-admin");
+
+    if(logoutButton){
+        logoutButton.style.display = "none";
+    }
+
+    window.location.href = "../login/login-page.html";
 }

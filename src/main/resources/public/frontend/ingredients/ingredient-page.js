@@ -4,6 +4,7 @@
 
 const BASE_URL = "http://localhost:8081"; // backend URL
 
+
 /* 
  * TODO: Get references to various DOM elements
  * - addIngredientNameInput
