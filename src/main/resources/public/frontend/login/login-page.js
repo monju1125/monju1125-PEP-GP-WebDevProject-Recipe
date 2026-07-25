@@ -28,6 +28,10 @@ if(logoutButton && sessionStorage.getItem("auth-token")){
     logoutButton.style.display = "inline-block";
 }
 
+if(logoutButton){
+    logoutButton.addEventListener("click", processLogout);
+}
+
 /**
  * TODO: Process Login Function
  * 
@@ -60,8 +64,9 @@ async function processLogin() {
         return;
     }
      */
-    if(!loginInput  || passwordInput || loginButton) {
+    if( !(loginInput instanceof HTMLElement) || !(passwordInput instanceof HTMLElement) ) {
         console.error("Login form inputs are missing.");
+        return;
     }
 
 
