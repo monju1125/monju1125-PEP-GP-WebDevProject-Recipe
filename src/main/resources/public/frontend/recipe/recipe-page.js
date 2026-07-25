@@ -16,14 +16,41 @@ window.addEventListener("DOMContentLoaded", () => {
      * - Admin link and logout button
      * - Search input
     */
+   const addRecipeNameInput = document.getElementById("add-recipe-name-input");
+   const addRecipeInstructionsInput = document.getElementById("add-recipe-instructions-input");
+
+   const updateRecipeNameInput = document.getElementById("update-recipe-name-input");
+   const updateRecipeInstructionsInput = document.getElementById("update-recipe-instructions-input");
+
+   const deleteRecipeNameInput = document.getElementById("delete-recipe-name-input");
+
+
+   const recipeListContainer = document.getElementById("recipe-list");
+
+   const adminLink = document.getElementById("admin-link");
+
+   const logoutButton = document.getElementById("logout-button");
+
+   const searchInput = document.getElementById("search-input");
+
+   const addRecipeButton = document.getElementById("add-recipe-submit-input");
+   const updateRecipeButton = document.getElementById("update-recipe-submit-input");
+   const deleteRecipeButton = document.getElementById("delete-recipe-submit-input");
+   const searchButton = document.getElementById("search-button");
+
+
 
     /*
      * TODO: Show logout button if auth-token exists in sessionStorage
      */
+    if(sessionStorage.getItem("auth-token")){
+        logoutButton.style.display = "inline-block";
+    }
 
     /*
      * TODO: Show admin link if is-admin flag in sessionStorage is "true"
      */
+    display.adminLink();
 
     /*
      * TODO: Attach event handlers
@@ -33,10 +60,44 @@ window.addEventListener("DOMContentLoaded", () => {
      * - Search button → searchRecipes()
      * - Logout button → processLogout()
      */
+    addRecipeButton.addEventListener("click", addRecipe);
+    updateRecipeButton.addEventListener("click", updateRecipe);
+    deleteRecipeButton.addEventListener("click", deleteRecipe);
+    searchButton.addEventListener("click", searchRecipes);
+    logoutButton.addEventListener("click", processLogout);
 
     /*
      * TODO: On page load, call getRecipes() to populate the list
      */
+    getRecipes();
+    function getAuthHeaders(includeJson= false){
+        const headers = {
+        "Authentication" : "Bearer" + sessionStorage.getItem("auth-token")
+        };
+        if(include.Json){
+            headers["Content-Type"] = "application/json";
+        }
+        return headers;
+    }
+
+    function displayAdminLink(){
+        const isAdmin = sessionStorage.getItem("is-admin");
+
+        if(isAdmin === "true"){
+            adminLink.style.display = "inner-block";
+        }else {
+            adminLink.style.display = "none";
+        }
+    }
+
+    function normalizeName(value){
+        return value.trim().toLowerCase();
+    }
+
+    function findRecipeByName(name){
+        const normalizedName = normalizeName(name);
+        return recipes.find(recipe => normalizeName(recipe.name) === normalizedName);
+    }
 
 
     /**
@@ -46,8 +107,21 @@ window.addEventListener("DOMContentLoaded", () => {
      * - Update the recipe list using refreshRecipeList()
      * - Handle fetch errors and alert user
      */
+
+
     async function searchRecipes() {
         // Implement search logic here
+        const searchTerm = searchInput.value.trim().toLowerCase();
+
+        if(!searchTerm){
+            refreshRecipeList(recipes);
+            return;
+        }
+        const filteredRecipes = recipes.filter(recipe => 
+            recipe.name && recipe.name.toLowerCase().includes(searchTerm)
+        );
+
+        refreshRecipeList(filteredRecipes);
     }
 
     /**
@@ -60,7 +134,44 @@ window.addEventListener("DOMContentLoaded", () => {
      */
     async function addRecipe() {
         // Implement add logic here
-    }
+        const name = addRecipeNameInput.value.trim();
+        const instructions = addRecipeInstructionsInput.value.trim();
+
+        if(!name || !instructions){
+            alert("Please enter both recipe name and instructions.");
+            return;
+        }
+
+        const requestBody = {
+            name,
+            instructions
+        };
+        
+        try{
+            const response = await fetch(`${BASE_URL}/RECIPES`,{
+                method: "POST",
+                mode: "cors",
+                headers: getAuthHeaders(true),
+                body: JSON.stringify(requestBody)
+            });
+
+            if(response.ok){
+                addRecipeNameInput.value = "";
+                addRecipeInstructionsInput.value = "";
+                await getRecipes();
+            }else if(response.status === 401 || response.status === 403){
+                alert ("You are not authorized to add recipes.");
+            }else if(response.status === 409){
+                alert("A recipe with that name already exists.");
+            }else{
+                alert("Failed to add recipe");
+            }
+
+        }catch(error){
+            console.error("Add recipe error:", error);
+            alert("Unable to add recipe. Please check your connection and try again.");
+        }
+        
 
     /**
      * TODO: Update Recipe Function

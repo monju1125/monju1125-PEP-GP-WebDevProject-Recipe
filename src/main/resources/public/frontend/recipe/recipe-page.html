@@ -16,13 +16,22 @@
 <body>
 
     <!-- TODO: Add a hidden link with id="admin-link" to navigate to the ingredients page (admin only) -->
+     <a id=" admin-link" href="../ingredients/ingredient-page.html" style="display: none;">Manage Ingredients/a>
 
     <!-- TODO: Add a hidden Logout button with id="logout-button" -->
+     <button id="logout-button" style="display: none;">Logout</button>
+     
 
     <!-- TODO: Add an h1 heading for the Recipe Management section -->
-
+    <h1>Recipe Management</h1>
 
     <!-- 🔍 Search a Recipe -->
+    <section>
+        <h2>Search a Recipe</h2>
+        <input id="search-input" type=" = "text" placeholder="Search by recipe name">
+        <button id="search-button">Search</button>
+    </section>
+
     <!-- 
         TODO: 
         - Create an h2 with text "Search a Recipe"
@@ -37,7 +46,10 @@
         - Create a <ul> to hold all recipes
         - Give it id="recipe-list"
     -->
-
+    <section>
+        <h2>Recipes</h2>
+        <ul id="recipe-list"></ul>
+    </section>
 
     <!-- ➕ Add a Recipe -->
     <!-- 
@@ -47,6 +59,14 @@
         - Textarea for instructions (id="add-recipe-instructions-input")
         - Button to submit (id="add-recipe-submit-input") with text "Add Recipe"
     -->
+    <section>
+        <h2>Add a Recipe</h2>
+        <input id = "add-recipe-name-input" type="text" placeholder="Recipe name">
+        <br><br>
+        <textarea id="add-recipe-instructions-input" placeholder="Recipe instructions"></textarea>
+        <br><br>
+        <button id="add-recipe-submit-input"></button>
+    </section>
 
 
     <!-- ✏️ Update a Recipe -->
@@ -57,6 +77,16 @@
         - Textarea for updated instructions (id="update-recipe-instructions-input")
         - Button (id="update-recipe-submit-input") with text "Update Recipe"
     -->
+        <section>
+            <h2>Update a Recipe</h2>
+            <input id = "update-recipe-name-input" type=" text" placeholder="Existing recipe name">
+            <br><br>
+
+            <textarea id = "update-recipe-instructions-input" placeholder="Updated instructions"></textarea>
+            <br><br>
+            <button id="update-recipe-submit-input">Update Recipe</button>
+        </section>
+
 
 
     <!-- ❌ Delete a Recipe -->
@@ -66,7 +96,14 @@
         - Input with id="delete-recipe-name-input"
         - Button with id="delete-recipe-submit-input" and text "Delete Recipe"
     -->
+        <section>
+        <h2>Delete a Recipe</h2>
+        <input id="delete-recipe-name-input" type="text" placeholder="Recipe name to delete">
+        <br><br>
 
+        <button id = "delete-recipe-submit-input">Delete Recipe</button>
+        </section>
+        
     <script src="recipe-page.js"></script>
 </body>
 

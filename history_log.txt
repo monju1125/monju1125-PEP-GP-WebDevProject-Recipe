@@ -1,7 +1,7 @@
-commit 16deb64d3799e2ffaa01264d79d9d2dd5ed70f23
+commit 61caac5703d66223f341fb9b77126c76d50a7bee
 Author: monju1125 <monju1125@github.com>
-Date:   Fri Jul 24 23:18:25 2026 +0000
+Date:   Sat Jul 25 02:23:07 2026 +0000
 
-    First commit login page structure
+    registration pages structure formatting and styling
 
- 40 files changed, 65 insertions(+), 5 deletions(-)
+ 3 files changed, 62 insertions(+), 1 deletion(-)
