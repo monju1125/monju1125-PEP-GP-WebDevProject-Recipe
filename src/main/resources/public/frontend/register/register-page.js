@@ -9,10 +9,19 @@ const BASE_URL = "http://localhost:8081"; // backend URL
  * - usernameInput, emailInput, passwordInput, repeatPasswordInput, registerButton
  */
 
+const usernameInput = document.getElementById("username-input");
+const emailInput = document.getElementById("email-input");
+const passwordInput = document.getElementById("password-input");
+const repeatPasswordInput = document.getElementById("repeat-password-input");
+const registerButton = document.getElementById("register-button");
+
 
 /* 
  * TODO: Ensure the register button calls processRegistration when clicked
  */
+if(registerButton){
+    registerButton.addEventListener("click", processRegistration);
+}
 
 
 /**
@@ -40,9 +49,30 @@ const BASE_URL = "http://localhost:8081"; // backend URL
  */
 async function processRegistration() {
     // Implement registration logic here
+    const username = usernameInput.value.trim();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+    const repeatPassword = repeatPasswordInput.value.trim();
+
+    if(!username || !email || !password || !repeatPassword){
+        alert("Please fill out all registration fields.");
+        return;
+    }
+
+    if(password !== repeatPassword){
+        alert("Password donot match.");
+        return;
+    }
+
 
     // Example placeholder:
     // const registerBody = { username, email, password };
+    const registerBody = {
+        username,
+        email,
+        password
+    };
+
 const requestOptions = {
         method: "POST",
         mode: "cors",
@@ -58,4 +88,20 @@ const requestOptions = {
         body: JSON.stringify(registerBody)
     };
     // await fetch(...)
+
+    try{
+        const response = await fetch(`${BASE_URL}/register`, requestOptions);
+
+        if(response.status === 201){
+            alert("Registration successful. Please login");
+            window.location.href = "../login/login-page.html";
+        }else if(response.status === 409){
+            alert("Username or email already exists");
+        }else{
+            alert("Registration failed. Please try again");
+        }
+    }catch(error){
+        console.error("Registration error: ", error);
+        alert("Unable to register. Please check your connection and try again.");
+    }
 }
