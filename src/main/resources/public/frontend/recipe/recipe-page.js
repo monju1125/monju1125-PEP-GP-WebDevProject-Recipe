@@ -50,7 +50,7 @@ window.addEventListener("DOMContentLoaded", () => {
     /*
      * TODO: Show admin link if is-admin flag in sessionStorage is "true"
      */
-    display.adminLink();
+    displayAdminLink();
 
     /*
      * TODO: Attach event handlers
@@ -72,9 +72,9 @@ window.addEventListener("DOMContentLoaded", () => {
     getRecipes();
     function getAuthHeaders(includeJson= false){
         const headers = {
-        "Authentication" : "Bearer" + sessionStorage.getItem("auth-token")
+        "Authentication" : "Bearer " + sessionStorage.getItem("auth-token")
         };
-        if(include.Json){
+        if(includeJson){
             headers["Content-Type"] = "application/json";
         }
         return headers;
@@ -84,7 +84,7 @@ window.addEventListener("DOMContentLoaded", () => {
         const isAdmin = sessionStorage.getItem("is-admin");
 
         if(isAdmin === "true"){
-            adminLink.style.display = "inner-block";
+            adminLink.style.display = "inline-block";
         }else {
             adminLink.style.display = "none";
         }
@@ -171,6 +171,7 @@ window.addEventListener("DOMContentLoaded", () => {
             console.error("Add recipe error:", error);
             alert("Unable to add recipe. Please check your connection and try again.");
         }
+    }
         
 
     /**
@@ -183,6 +184,48 @@ window.addEventListener("DOMContentLoaded", () => {
      */
     async function updateRecipe() {
         // Implement update logic here
+        const name = updateRecipeNameInput.value.trim();
+        const instructions = updateRecipeInstructionsInput.value.trim();
+
+        if(!name || !instructions){
+            alert("Please enter both recipe name and updated instructions.");
+            return;
+        }
+
+        await getRecipes();
+
+        const recipeToUpdate = findRecipeByName(name);
+
+        if(!recipeToUpdate){
+            alert("Recipe not found");
+            return;
+        }
+
+        const requestBody = {
+            name: recipeToUpdate.name,
+            instructions
+        };
+
+        try{
+            const response = await fetch(`${BASE_URL}/recipes/${recipeToUpdate.id}`,{
+                method: "PUT",
+                mode: "cors",
+                headers: getAuthHeaders(true),
+                body: JSON.stringify(requestBody)
+            });
+            if(response.ok){
+                updateRecipeNameInput.value = "";
+                updateRecipeInstructionsInput.value = "";
+                await getRecipes();
+            }else if(response.status === 401 || response.status === 403){
+                    alert("You are not authorized to update this recipe.");
+            }else{
+                alert("Failed to update recipe.");
+            }
+        }catch(error){
+            console.error("Update recipe error:", error);
+            alert("Unable to updatev recipe. Please check your connection and try again.");
+        }
     }
 
     /**
@@ -194,6 +237,41 @@ window.addEventListener("DOMContentLoaded", () => {
      */
     async function deleteRecipe() {
         // Implement delete logic here
+        const name = deleteRecipeNameInput.value.trim();
+
+        if(!name){
+            alert("Please enter a recipe name to delete.");
+            return;
+        }
+
+        await getRecipes();
+
+        const recipeToDelete = findRecipeByName(name);
+
+        if(!recipeToDelete){
+            alert("Recipe not found");
+            return;
+        }
+
+        try{
+            const response = await fetch(`${BASE_URL}/recipes/${recipeToDelete.id}`,{
+                method: "DELETE",
+                mode: "cors",
+                headers: getAuthHeaders()
+            });
+
+            if(response.ok){
+                deleteRecipeNameInput.value = "";
+                await getRecipes();
+            }else if(response.status === 401 || response.status === 403){
+                alert("You are not authorized to delete this recipe.");
+            }else{
+                alert("Failed to delete recepe");
+            }
+        }catch(error){
+                console.error("Delete recepe error:", error);
+                alert("Unable to delete recipe. Please check your connection and try again.");
+        }
     }
 
     /**
@@ -204,6 +282,25 @@ window.addEventListener("DOMContentLoaded", () => {
      */
     async function getRecipes() {
         // Implement get logic here
+        try{
+            const response = await fetch (`${BASE_URL}/recipes`,{
+                method: "GET",
+                mode: "cors",
+                headers: getAuthHeaders()
+            });
+            if(response.ok){
+                recipes = await response.json();
+                refreshRecipeList(recipes);
+            }else if(response.status === 401 || response.status === 403){
+                alert("Please login to view recipes.");
+                window.location.href = "../login/login-page.html";
+            }else{
+                alert("Failed to fetch recipes");
+            }
+        }catch(error){
+            console.error("Get recipes error:", error);
+            alert("Unable to fetch recipes. Please check your connection and try again");
+        }
     }
 
     /**
@@ -212,8 +309,31 @@ window.addEventListener("DOMContentLoaded", () => {
      * - Create <li> elements for each recipe with name + instructions
      * - Append to list container
      */
-    function refreshRecipeList() {
+    function refreshRecipeList(recipeArray = recipes) {
         // Implement refresh logic here
+        recipeListContainer.innerHTML = "";
+
+        if(!recipeArray || recipeArray.length === 0){
+            const emptyItem = document.createElement("li");
+            emptyItem.textContent = "No recipes found.";
+            recipeListContainer.appendChild(emptyItem);
+            return;
+        }
+
+        recipeArray.forEach( recipe => {
+            const listItem = document.createElement("li");
+
+            const nameParagraph = document.createElement("p");
+            nameParagraph.textContent = `Name: ${recipe.name}`;
+
+            const instructionsParagraph = document.createElement("p");
+            instructionsParagraph.textContent = `Instructions: ${recipe.instructions}`;
+
+            listItem.appendChild(nameParagraph);
+            listItem.appendChild(instructionsParagraph);
+
+            recipeListContainer.appendChild(listItem);
+        });
     }
 
     /**
@@ -225,6 +345,23 @@ window.addEventListener("DOMContentLoaded", () => {
      */
     async function processLogout() {
         // Implement logout logic here
+        try{
+            const response = await fetch(`${BASE_URL}/logout`, {
+                method: "POST",
+                mode: "cors",
+                headers: getAuthHeaders()
+            });
+            if(response.ok){
+                sessionStorage.removeItem("auth-token");
+                sessionStorage.removeItem("is-admin");
+                window.location.href = "../login/login-page.html";
+            }else{
+                alert("Logout failed.");
+            }
+        }catch(error){
+            console.error("Logout error:", error);
+            alert("Unable to logout. Please checks your connection and try again.");
+        }
     }
-
 });
+
