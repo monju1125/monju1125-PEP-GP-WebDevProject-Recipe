@@ -74,14 +74,14 @@ function getAuthHeaders(includeJson = false){
     }
     return headers;
 }
-function normalizedName(value){
+function normalizeName(value){
     return value.trim().toLowerCase();
 }
 
 function findIngredientByName(name){
-    const normalizedName = normalizedName(name);
+    const normalizedName = normalizeName(name);
     return ingredients.find(ingredient => 
-        normalizedName(ingredient.name) === normalizedName);
+        normalizeName(ingredient.name) === normalizedName);
 }
 
 async function addIngredient() {

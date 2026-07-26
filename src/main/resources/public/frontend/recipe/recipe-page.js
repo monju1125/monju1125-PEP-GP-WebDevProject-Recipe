@@ -78,9 +78,9 @@ window.addEventListener("DOMContentLoaded", () => {
      * TODO: On page load, call getRecipes() to populate the list
      */
     getRecipes();
-    function getAuthHeaders(includeJson= false){
+    function getAuthHeaders(includeJson = false){
         const headers = {
-        "Authentication" : "Bearer " + sessionStorage.getItem("auth-token")
+        "Authorization" : "Bearer " + sessionStorage.getItem("auth-token")
         };
         if(includeJson){
             headers["Content-Type"] = "application/json";
@@ -89,6 +89,9 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     function displayAdminLink(){
+        if(!adminLink){
+            return;
+        }
         const isAdmin = sessionStorage.getItem("is-admin");
 
         if(isAdmin === "true"){
@@ -156,7 +159,7 @@ window.addEventListener("DOMContentLoaded", () => {
         };
         
         try{
-            const response = await fetch(`${BASE_URL}/RECIPES`,{
+            const response = await fetch(`${BASE_URL}/recipes`,{
                 method: "POST",
                 mode: "cors",
                 headers: getAuthHeaders(true),
@@ -232,7 +235,7 @@ window.addEventListener("DOMContentLoaded", () => {
             }
         }catch(error){
             console.error("Update recipe error:", error);
-            alert("Unable to updatev recipe. Please check your connection and try again.");
+            alert("Unable to update recipe. Please check your connection and try again.");
         }
     }
 
@@ -353,6 +356,11 @@ window.addEventListener("DOMContentLoaded", () => {
      */
     async function processLogout() {
         // Implement logout logic here
+        sessionStorage.removeItem("auth-token");
+        sessionStorage.removeItem("is-admin");
+        window.location.href = "../login/login-page.html";
+        
+        /*
         try{
             const response = await fetch(`${BASE_URL}/logout`, {
                 method: "POST",
@@ -370,6 +378,5 @@ window.addEventListener("DOMContentLoaded", () => {
             console.error("Logout error:", error);
             alert("Unable to logout. Please checks your connection and try again.");
         }
-    }
-});
+        */
 

@@ -129,7 +129,7 @@ async function processLogin() {
 
         // TODO: Optionally show the logout button if applicable
         if(logoutButton){
-            logoutButton.style.display = "inner-block";
+            logoutButton.style.display = "inline-block";
         }
    
 
