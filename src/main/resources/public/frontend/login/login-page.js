@@ -24,13 +24,15 @@ if(loginButton){
     loginButton.addEventListener("click", processLogin);
 }
 
+if(logoutButton){
+    logoutButton.addEventListener("click", processLogout);
+}
+
 if(logoutButton && sessionStorage.getItem("auth-token")){
     logoutButton.style.display = "inline-block";
 }
 
-if(logoutButton){
-    logoutButton.addEventListener("click", processLogout);
-}
+
 
 /**
  * TODO: Process Login Function
@@ -58,17 +60,17 @@ async function processLogin() {
     //const passwordInput = document.getElementById("password-input");
     // TODO: Retrieve username and password from input fields
 
-    /*
-    if(!(loginInput instanceof HTMLInputElement) || passwordInput instanceof HTMLInputElement){
-        alert("Login form inputs are missing.");
-        return;
-    }
-     */
+  /*
     if( !(loginInput instanceof HTMLElement) || !(passwordInput instanceof HTMLElement) ) {
         console.error("Login form inputs are missing.");
         return;
     }
+  */
 
+    if( !loginInput  || !passwordInput ) {
+        console.error("Login form inputs are missing.");
+        return;
+    }
 
     const username = loginInput.value.trim();
     const password = passwordInput.value.trim();
@@ -82,8 +84,8 @@ async function processLogin() {
     }
 
     const requestBody = {
-        username,
-        password
+        username: username,
+        password: password
     };
 
     const requestOptions = {
@@ -123,7 +125,8 @@ async function processLogin() {
         }
 
         sessionStorage.setItem("auth-token", token);
-        sessionStorage.setItem("is-admin", isAdmin === "true" ? "true" : "false");
+       // sessionStorage.setItem("is-admin", isAdmin === "true" ? "true" : "false");
+       sessionStorage.setItem("is-admin", isAdmin);
 
         // TODO: Optionally show the logout button if applicable
         if(logoutButton){

@@ -16,6 +16,7 @@ window.addEventListener("DOMContentLoaded", () => {
      * - Admin link and logout button
      * - Search input
     */
+
    const addRecipeNameInput = document.getElementById("add-recipe-name-input");
    const addRecipeInstructionsInput = document.getElementById("add-recipe-instructions-input");
 
@@ -28,6 +29,13 @@ window.addEventListener("DOMContentLoaded", () => {
    const recipeListContainer = document.getElementById("recipe-list");
 
    const adminLink = document.getElementById("admin-link");
+   if(adminLink){
+    if(sessionStorage.getItem("is-admin") === "true"){
+        adminLink.style.display = "inline-block";
+    }else {
+        adminLink.style.display = "none";
+      }
+    }
 
    const logoutButton = document.getElementById("logout-button");
 
