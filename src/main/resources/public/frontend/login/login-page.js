@@ -32,8 +32,6 @@ if(logoutButton && sessionStorage.getItem("auth-token")){
     logoutButton.style.display = "inline-block";
 }
 
-
-
 /**
  * TODO: Process Login Function
  * 
