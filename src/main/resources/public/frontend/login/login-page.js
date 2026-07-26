@@ -60,18 +60,17 @@ async function processLogin() {
     //const passwordInput = document.getElementById("password-input");
     // TODO: Retrieve username and password from input fields
 
-  /*
     if( !(loginInput instanceof HTMLElement) || !(passwordInput instanceof HTMLElement) ) {
         console.error("Login form inputs are missing.");
         return;
     }
-  */
-
+  
+  /*
     if( !loginInput  || !passwordInput ) {
         console.error("Login form inputs are missing.");
         return;
     }
-
+ */
     const username = loginInput.value.trim();
     const password = passwordInput.value.trim();
 
