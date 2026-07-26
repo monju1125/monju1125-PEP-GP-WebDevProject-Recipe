@@ -70,7 +70,7 @@ async function processLogin() {
         console.error("Login form inputs are missing.");
         return;
     }
- */
+  */
     const username = loginInput.value.trim();
     const password = passwordInput.value.trim();
 
