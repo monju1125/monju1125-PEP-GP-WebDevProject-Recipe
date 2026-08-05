@@ -106,15 +106,18 @@ async function processLogin() {
 
         // TODO: If response status is 200
         if(response.status === 200){
-            const responseText = await response.text();
-            const parts = responseText.trim().split(/\s+/);
+            const data = await response.json();
+            const token = data["auth-token"];
+            //const responseText = await response.text();
+           // const parts = responseText.trim().split(/\s+/);
         
         // - Read the response as text
         // - Response will be a space-separated string: "token123 true"
         // - Split the string into token and isAdmin flag
         // - Store both in sessionStorage using sessionStorage.setItem()
-        const token = parts[0];
-        const isAdmin = parts[1];
+        //const token = parts[0];
+        //const isAdmin = parts[1];
+        const isAdmin = data[is-admin] || "false";
         
         if(!token){
             alert("Login response did not contain a valid token.");
@@ -130,7 +133,7 @@ async function processLogin() {
             logoutButton.style.display = "inline-block";
         }
    
-
+        
         // TODO: Add a small delay (e.g., 500ms) using setTimeout before redirecting
         // - Use window.location.href to redirect to the recipe page
         setTimeout( () => {

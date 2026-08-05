@@ -49,13 +49,24 @@ if(registerButton){
  */
 async function processRegistration() {
     // Implement registration logic here
+    /*
     const username = usernameInput.value.trim();
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
     const repeatPassword = repeatPasswordInput.value.trim();
+    */
 
-    if(!username || !email || !password || !repeatPassword){
+    if(!usernameInput || !emailInput || !passwordInput || !repeatPasswordInput){
         alert("Please fill out all registration fields.");
+        return;
+    }
+    const username = usernameInput.value.trim();
+    const email = emailInput ? emailInput.value.trim() : "";
+    const password = passwordInput.value.trim();
+    const repeatPassword = repeatPasswordInput.value.trim();
+
+    if(!username || !password || !repeatPassword) {
+        alert("Please fill out all required registration fields");
         return;
     }
 

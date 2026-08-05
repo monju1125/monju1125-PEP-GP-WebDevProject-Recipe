@@ -170,8 +170,8 @@ window.addEventListener("DOMContentLoaded", () => {
         }
 
         const requestBody = {
-            name,
-            instructions
+            name: name,
+            instructions: instructions
         };
         
         try{
@@ -375,6 +375,9 @@ window.addEventListener("DOMContentLoaded", () => {
         sessionStorage.removeItem("auth-token");
         sessionStorage.removeItem("is-admin");
         window.location.href = "../login/login-page.html";
+    }
+
+});
         
         /*
         try{
