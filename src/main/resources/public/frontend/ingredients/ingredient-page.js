@@ -175,7 +175,7 @@ async function deleteIngredient() {
         alert("Please enter an ingredient name to delete.");
         return;
     }
-    await getIngredients();
+    //await getIngredients();
 
     const ingredientToDelete = findIngredientByName(name);
 
@@ -184,7 +184,18 @@ async function deleteIngredient() {
         return;
     }
 
+    ingredients = ingredients.filter(ingredient => 
+            ingredient.name && normalizeName(ingredient.name) != normalizeName(name)
+    );
+    refreshIngredientList();
+
+    deleteIngredientNameInput.value = "";
     try{
+
+        const ingredientIdentifier = ingredientToDelete.id != undefined
+        ?  ingredientToDelete.id
+        : ingredientToDelete.name;
+
         const response = await fetch(`${BASE_URL}/ingredients/${ingredientToDelete.id}`,{
             method: "DELETE",
             mode: "cors",
