@@ -104,7 +104,7 @@ const requestOptions = {
         const response = await fetch(`${BASE_URL}/register`, requestOptions);
 
         if(response.status === 201){
-            alert("Registration successful. Please login");
+            /* alert("Registration successful. Please login"); */
             window.location.href = "../login/login-page.html";
         }else if(response.status === 409){
             alert("Username or email already exists");

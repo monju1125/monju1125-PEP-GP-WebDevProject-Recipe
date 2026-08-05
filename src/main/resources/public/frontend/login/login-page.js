@@ -106,18 +106,20 @@ async function processLogin() {
 
         // TODO: If response status is 200
         if(response.status === 200){
-            const data = await response.json();
-            const token = data["auth-token"];
-            //const responseText = await response.text();
-           // const parts = responseText.trim().split(/\s+/);
+            const responseText = await response.text();
+            //const data = await response.json();
+            //const token = "";
+            //const isAdmin = "false";
+            
+           const parts = responseText.trim().split(/\s+/);
         
         // - Read the response as text
         // - Response will be a space-separated string: "token123 true"
         // - Split the string into token and isAdmin flag
         // - Store both in sessionStorage using sessionStorage.setItem()
-        //const token = parts[0];
-        //const isAdmin = parts[1];
-        const isAdmin = data[is-admin] || "false";
+        const token = parts[0];
+        const isAdmin = parts[1];
+        
         
         if(!token){
             alert("Login response did not contain a valid token.");
