@@ -23,7 +23,7 @@ const deleteIngredientSubmitButton = document.getElementById("delete-ingredient-
 let ingredients = [];
 
 if(!sessionStorage.getItem("auth-token")){
-    alert("Please login first.");
+    console.error("Please login first.");
     window.location.href= "../login/login-page.html";
 }
 
@@ -109,7 +109,7 @@ async function addIngredient() {
             addIngredientNameInput.value = "";
             await getIngredients(); 
         }else if(response.status === 401 || response.status === 403){
-            alert("You are not authorized to add ingredients.");
+            console.error("You are not authorized to add ingredients.");
         }else if(response.status === 409){
             alert("Ingredients already exists.");
         }else{
@@ -143,10 +143,10 @@ async function getIngredients() {
             ingredients = await response.json();
             refreshIngredientList();
         }else if(response.status === 401 || response.status === 403){
-            alert("You are not authorized to view ingredients.");
+            console.error("You are not authorized to view ingredients.");
             window.location.href = "../recipe/recipe-page.html";
         }else{
-            alert("Failed to fetch ingredients.");
+            console.error("Failed to fetch ingredients.");
         }
     }catch(error){
         console.error("Get ingredients error:", error);
@@ -193,7 +193,9 @@ async function deleteIngredient() {
 
         if(response.ok){
             deleteIngredientNameInput.value = "";
-            await getIngredients();
+            ingredients = ingredients.filter(ingredient => ingredient.id != ingredientToDelete.id);
+            refreshIngredientList();
+            //await getIngredients();
         }else if(response.status === 401 || response.status === 403){
             console.error("You are not authorized to delete ingredients.");
         }else{
@@ -231,7 +233,8 @@ function refreshIngredientList() {
         const listItem = document.createElement("li");
 
         const nameParagraph = document.createElement("p");
-        nameParagraph.textContent = ingredient.name;
+        //nameParagraph.textContent = ingredient.name;
+        listItem.textContent = ingredient.name;
 
         listItem.appendChild(nameParagraph);
         ingredientListContainer.appendChild(listItem);
