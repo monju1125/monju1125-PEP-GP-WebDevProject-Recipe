@@ -195,13 +195,13 @@ async function deleteIngredient() {
             deleteIngredientNameInput.value = "";
             await getIngredients();
         }else if(response.status === 401 || response.status === 403){
-            alert("You are not authorized to delete ingredients.");
+            console.error("You are not authorized to delete ingredients.");
         }else{
-            alert("Failed to delete ingredient.");
+            console.error("Failed to delete ingredient.");
         }
     }catch(error){
         console.error("Delete ingredient error:", error);
-        alert("Unable to delete ingredient. Please check your connection and try again.");
+        //alert("Unable to delete ingredient. Please check your connection and try again.");
     }
 }
 
